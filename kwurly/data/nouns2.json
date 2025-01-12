@@ -1,0 +1,15 @@
+{
+    "nouns": [
+      "cup", "pen", "notebook", "lamp", "table", "chair", "window", "door", "clock", "mirror",
+      "phone", "battery", "key", "wallet", "watch", "hat", "scarf", "glove", "shoe", "sock",
+      "jacket", "sweater", "shirt", "blouse", "tie", "belt", "ring", "necklace", "bracelet", "earring",
+      "umbrella", "backpack", "suitcase", "camera", "lens", "tripod", "microphone", "speaker", "headphone", "keyboard",
+      "mouse", "monitor", "printer", "scanner", "router", "modem", "disk", "usb", "charger", "adapter",
+      "calculator", "paper", "stapler", "tape", "envelope", "folder", "file", "cabinet", "shelf", "drawer",
+      "bed", "pillow", "blanket", "mattress", "cushion", "curtain", "carpet", "rug", "lamp", "fan",
+      "heater", "airconditioner", "radio", "television", "remote", "controller", "joystick", "console", "game", "disc",
+      "bottle", "glass", "plate", "bowl", "fork", "knife", "spoon", "pan", "pot", "oven",
+      "stove", "microwave", "fridge", "freezer", "toaster", "blender", "mixer", "grater", "peeler", "whisk"
+    ]
+  }
+  
