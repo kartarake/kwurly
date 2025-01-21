@@ -1,5 +1,5 @@
 name: kwurly
-description: "A new Flutter project."
+description: "A creativity boost tool"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,9 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.3 
+  http: ^1.3.0 
   path_provider: ^2.0.6
   flutter_svg: ^2.0.9
+  window_manager: ^0.4.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -60,7 +61,18 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/
+    - assets\icons\tabler--settings.svg
+    - assets\icons\tabler--device-floppy.svg
+    - assets\icons\tabler--eraser.svg
+  fonts:
+    - family: Comic
+      fonts:
+        - asset: assets\fonts\ComicNeue-Bold.ttf
+        - asset: assets\fonts\ComicNeue-BoldItalic.ttf
+        - asset: assets\fonts\ComicNeue-Italic.ttf
+        - asset: assets\fonts\ComicNeue-Light.ttf
+        - asset: assets\fonts\ComicNeue-LightItalic.ttf
+        - asset: assets\fonts\ComicNeue-Regular.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
