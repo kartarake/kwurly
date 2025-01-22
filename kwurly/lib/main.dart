@@ -36,25 +36,34 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: actionlist,
         elevation: 0,
+        backgroundColor: Colors.white,
       ),
-
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            getinputbox(),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.white, Color.fromARGB(255, 230, 230, 230)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-      )
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              getinputbox(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
+
 
 var actionlist = [
   Padding(
