@@ -5,13 +5,27 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    size: Size(1280, 720),
+    center: true,
+    backgroundColor: Colors.transparent,
+    titleBarStyle: TitleBarStyle.normal,
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    // Maximize the window when ready
+    await windowManager.maximize();
+    await windowManager.show();
+    await windowManager.focus();
+  });
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    windowManager.maximize();
     return MaterialApp(
       title:"kwurly",
       debugShowCheckedModeBanner: false,
@@ -119,5 +133,4 @@ Container getinputbox() {
       ]      
     )
   );
-
 }
