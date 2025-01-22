@@ -44,10 +44,13 @@ class HomePage extends StatelessWidget {
         elevation: 0,
       ),
 
-      body: Scaffold(
-        body: Center(
-          child: getinputbox() 
-        )
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            getinputbox(),
+          ],
+        ),
       )
     );
   }
