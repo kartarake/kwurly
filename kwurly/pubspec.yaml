@@ -64,6 +64,7 @@ flutter:
     - assets\icons\tabler--settings.svg
     - assets\icons\tabler--device-floppy.svg
     - assets\icons\tabler--eraser.svg
+    - assets\icons\tabler--arrow-up-right.svg
   fonts:
     - family: Comic
       fonts:

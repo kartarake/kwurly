@@ -8,7 +8,7 @@ List<String> pick() {
   List<int> fileindexes = List.generate(n, (index) => index+1);
   int fileindex = fileindexes[Random().nextInt(fileindexes.length)];
 
-  Map<String, dynamic> data = load('data/nouns${fileindex}.json');
+  Map<String, dynamic> data = load('data/nouns$fileindex.json');
 
   List<String> nouns = [];
   for (int i = 0; i < 10; i++) {

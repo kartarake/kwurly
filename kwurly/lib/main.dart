@@ -58,6 +58,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               getinputbox(),
+              SizedBox(height: 50,),
               generate
             ],
           ),
@@ -81,21 +82,43 @@ var actionlist = [
   ),
 ];
 
-TextButton generate = TextButton(
-  style: TextButton.styleFrom(
+ElevatedButton generate = ElevatedButton(
+  style: ElevatedButton.styleFrom(
     backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
-  ),
-  child: Text(
-    "Generate",
-    style: TextStyle(
-      color: Colors.black,
-      fontSize: 18,
-      fontFamily: "Comic"
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20)
     ),
+    elevation: 2,
+    fixedSize: Size(151, 60)
   ),
-  onPressed: () {print(pick());},
+
+  child: Row(
+    children: [
+      Text(
+        "Generate",
+        style: TextStyle(
+          fontFamily: "Comic",
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black
+        ),
+      ),
+
+      SizedBox(width: 7,),
+
+      SvgPicture.asset(
+        "assets\\icons\\tabler--arrow-up-right.svg",
+        width: 24,
+        height: 24,
+      )
+    ],
+  ),
+
+  onPressed: () {
+    print(pick());
+  },
 );
+
 
 Container getinputbox() {
   return Container(
@@ -103,11 +126,12 @@ Container getinputbox() {
     height: 177+34,
 
     decoration: BoxDecoration(
+      color: Colors.white,
       border: Border.all(
         color: Color(0xff191919),
         width: 0.5,
       ),
-      borderRadius: BorderRadius.circular(20)
+      borderRadius: BorderRadius.circular(20),
     ),
     
     child: Column(
