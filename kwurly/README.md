@@ -1,16 +1,8 @@
-# kwurly
+## Roadmap
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[ ] Generating and displaying words in GUI with pleasible animation.
+[ ] Saving few selected words and displaying them under their input idea and so they can recollect. (History)
+[ ] Saving short notes on words.
+[ ] Different GUI themes / color schemes. (Settings)
+[ ] Features to organize their ideas and notes.
+[ ] Sync
