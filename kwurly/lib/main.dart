@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'package:kwurly/picker.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
@@ -56,6 +58,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               getinputbox(),
+              generate
             ],
           ),
         ),
@@ -63,7 +66,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
 
 var actionlist = [
   Padding(
@@ -78,6 +80,22 @@ var actionlist = [
     ),
   ),
 ];
+
+TextButton generate = TextButton(
+  style: TextButton.styleFrom(
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+  ),
+  child: Text(
+    "Generate",
+    style: TextStyle(
+      color: Colors.black,
+      fontSize: 18,
+      fontFamily: "Comic"
+    ),
+  ),
+  onPressed: () {print(pick());},
+);
 
 Container getinputbox() {
   return Container(
