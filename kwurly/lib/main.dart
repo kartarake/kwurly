@@ -29,14 +29,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:"kwurly",
+      title: "kwurly",
       debugShowCheckedModeBanner: false,
-      home:HomePage(),
+      home: HomePage(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<String> words = [];
+  final ScrollController _scrollController = ScrollController();
+
+  void addWords() {
+    List<String> newWords = pick();
+
+    setState(() {
+      words.addAll(newWords);
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,8 +80,75 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               getinputbox(),
-              SizedBox(height: 50,),
-              generate
+              const SizedBox(height: 20),
+              Expanded(
+                child: Container(
+                  width: 1209,
+                  height: 600,
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Wrap(
+                      spacing: 30,
+                      runSpacing: 30,
+                      children: words
+                          .map(
+                            (word) => Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Text(
+                                word,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: "Comic",
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  elevation: 2,
+                  fixedSize: const Size(151, 60),
+                ),
+                
+                onPressed: addWords,
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Generate",
+                      style: TextStyle(
+                        fontFamily: "Comic",
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(width: 7),
+                    SvgPicture.asset(
+                      "assets\\icons\\tabler--arrow-up-right.svg",
+                      width: 24,
+                      height: 24,
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
@@ -82,61 +171,21 @@ var actionlist = [
   ),
 ];
 
-ElevatedButton generate = ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20)
-    ),
-    elevation: 2,
-    fixedSize: Size(151, 60)
-  ),
-
-  child: Row(
-    children: [
-      Text(
-        "Generate",
-        style: TextStyle(
-          fontFamily: "Comic",
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.black
-        ),
-      ),
-
-      SizedBox(width: 7,),
-
-      SvgPicture.asset(
-        "assets\\icons\\tabler--arrow-up-right.svg",
-        width: 24,
-        height: 24,
-      )
-    ],
-  ),
-
-  onPressed: () {
-    print(pick());
-  },
-);
-
-
 Container getinputbox() {
   return Container(
     width: 1209,
-    height: 177+34,
-
+    height: 211,
     decoration: BoxDecoration(
       color: Colors.white,
       border: Border.all(
-        color: Color(0xff191919),
+        color: const Color(0xff191919),
         width: 0.5,
       ),
       borderRadius: BorderRadius.circular(20),
     ),
-    
     child: Column(
       children: [
-        TextField(
+        const TextField(
           style: TextStyle(
             fontFamily: "Comic",
             fontSize: 18,
@@ -145,46 +194,39 @@ Container getinputbox() {
           decoration: InputDecoration(
             hintText: 'Your idea goes here ..',
             hintFadeDuration: Duration(milliseconds: 500),
-            hintStyle: TextStyle(
-              color: Colors.grey
-            ),
+            hintStyle: TextStyle(color: Colors.grey),
             contentPadding: EdgeInsets.symmetric(
               horizontal: 40,
-              vertical: 30
+              vertical: 30,
             ),
-            border: InputBorder.none
+            border: InputBorder.none,
           ),
         ),
-
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-              onPressed: () {}, 
+              onPressed: () {},
               icon: SvgPicture.asset(
                 "assets\\icons\\tabler--device-floppy.svg",
                 width: 24,
                 height: 24,
-              )
+              ),
             ),
-
-            SizedBox(width: 5),
-
+            const SizedBox(width: 5),
             IconButton(
-              onPressed: () {}, 
+              onPressed: () {},
               icon: SvgPicture.asset(
                 "assets\\icons\\tabler--eraser.svg",
                 width: 24,
                 height: 24,
-              )
+              ),
             ),
-
-            SizedBox(width: 20)
+            const SizedBox(width: 20),
           ],
         ),
-
-        SizedBox(height: 10)
-      ]      
-    )
+        const SizedBox(height: 10),
+      ],
+    ),
   );
 }
