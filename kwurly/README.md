@@ -6,3 +6,4 @@
 - [ ] Different GUI themes / color schemes. (Settings)
 - [ ] Features to organize their ideas and notes.
 - [ ] Sync
+- [ ] Formatting of notes
