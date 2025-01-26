@@ -16,7 +16,6 @@ void main() async {
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
-    // Maximize the window when ready
     await windowManager.maximize();
     await windowManager.show();
     await windowManager.focus();
@@ -46,12 +45,14 @@ class _HomePageState extends State<HomePage> {
   final ScrollController _scrollController = ScrollController();
 
   void addWords() {
+    // Simulated `pick()` function
     List<String> newWords = pick();
 
     setState(() {
       words.addAll(newWords);
     });
 
+    // Automatically scroll to the bottom when new words are added
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -66,6 +67,7 @@ class _HomePageState extends State<HomePage> {
         actions: actionlist,
         elevation: 0,
         backgroundColor: Colors.white,
+        scrolledUnderElevation: 0, // Remove darkening effect on scroll
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -80,42 +82,40 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               getinputbox(),
-              const SizedBox(height: 20),
-              Expanded(
-                child: Container(
-                  width: 1209,
-                  height: 600,
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Wrap(
-                      spacing: 30,
-                      runSpacing: 30,
-                      children: words
-                          .map(
-                            (word) => Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: Text(
-                                word,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontFamily: "Comic",
-                                  color: Colors.black,
-                                ),
+              const SizedBox(height: 40),
+              Container(
+                height: 300, // Restrict height here
+                width: 1209, // Fixed width
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Wrap(
+                    spacing: 30, // Space between words horizontally
+                    runSpacing: 30, // Space between lines
+                    children: words
+                        .map(
+                          (word) => Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              word,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Comic",
+                                color: Colors.black,
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
+                          ),
+                        )
+                        .toList(),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
@@ -125,9 +125,7 @@ class _HomePageState extends State<HomePage> {
                   elevation: 2,
                   fixedSize: const Size(151, 60),
                 ),
-                
                 onPressed: addWords,
-
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
