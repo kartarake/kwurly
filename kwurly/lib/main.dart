@@ -84,14 +84,15 @@ class _HomePageState extends State<HomePage> {
               getinputbox(),
               const SizedBox(height: 40),
               Container(
-                height: 300, // Restrict height here
-                width: 1209, // Fixed width
+                height: 300,
+                width: 1209,
                 padding: const EdgeInsets.all(20),
                 child: SingleChildScrollView(
                   controller: _scrollController,
                   child: Wrap(
-                    spacing: 30, // Space between words horizontally
-                    runSpacing: 30, // Space between lines
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 20,
+                    runSpacing: 30,
                     children: words
                         .map(
                           (word) => Container(
