@@ -6,8 +6,7 @@ String generateUniqueSequence() {
   const String allowedCharacters = 
       'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
       'abcdefghijklmnopqrstuvwxyz'
-      '0123456789'
-      '!@#\$%^&*()';
+      '0123456789';
 
   final random = Random();
   final buffer = StringBuffer();

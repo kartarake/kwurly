@@ -1,10 +1,10 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kwurly/handle.dart';
 import 'package:kwurly/ideas.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:kwurly/picker.dart';
+
 
 /// Main application entry point
 void main() async {
@@ -39,13 +39,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "kwurly",
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
 
 /// Main page widget with interactive elements
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const InputBox(),  // Text input container
+              InputBox(),  // Text input container
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
               const SizedBox(height: 50),
@@ -113,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           width: 24,
           height: 24,
         ),
-        onPressed: () {}, // TODO: Add settings functionality
+        onPressed: () {},
       ),
     ),
   ];
@@ -191,12 +193,19 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-TextEditingController textController = TextEditingController();
-
 /// Custom input box with text field and action buttons
-class InputBox extends StatelessWidget {
+class InputBox extends StatefulWidget {
   const InputBox({super.key});
+  @override
+  State<InputBox> createState() => InputBoxState();
+}
 
+class InputBoxState extends State<InputBox> {
+  final _textController = TextEditingController();  
+  @override  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -212,9 +221,9 @@ class InputBox extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             child: TextField(
-              controller: textController,
+              controller: _textController,
               style: TextStyle(
                 fontFamily: "Comic",
                 fontSize: 18,
@@ -231,20 +240,20 @@ class InputBox extends StatelessWidget {
               ),
             ),
           ),
-          _buildActionButtons(),
+          _buildActionButtons(_textController),
         ],
       ),
     );
   }
 
   /// Builds the row of action buttons
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(TextEditingController textController) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _buildSaveButton("assets/icons/tabler--device-floppy.svg"),
+          _buildSaveButton(textController),
           const SizedBox(width: 5),
           _buildIconButton("assets/icons/tabler--eraser.svg"),
           const SizedBox(width: 20),
@@ -256,9 +265,20 @@ class InputBox extends StatelessWidget {
   /// Creates a standardized icon button
   Widget _buildIconButton(String assetPath) {
     return IconButton(
-      onPressed: () {}, // TODO: Add button functionality
+      onPressed: () {},
       icon: SvgPicture.asset(
         assetPath,
+        width: 24,
+        height: 24,
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(TextEditingController textController) {
+    return IconButton(
+      onPressed: () {saveIdea(textController.text);},
+      icon: SvgPicture.asset(
+        "assets/icons/tabler--device-floppy.svg",
         width: 24,
         height: 24,
       ),
@@ -266,14 +286,3 @@ class InputBox extends StatelessWidget {
   }
 }
 
-  Widget _buildSaveButton(String assetPath) {
-    return IconButton(
-      onPressed: saveIdea(), // TODO: Add button functionality
-      icon: SvgPicture.asset(
-        assetPath,
-        width: 24,
-        height: 24,
-      ),
-    );
-  }
-}
