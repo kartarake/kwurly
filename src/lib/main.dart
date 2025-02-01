@@ -1,6 +1,8 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kwurly/handle.dart';
+import 'package:kwurly/ideas.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:kwurly/picker.dart';
 
@@ -189,6 +191,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+TextEditingController textController = TextEditingController();
+
 /// Custom input box with text field and action buttons
 class InputBox extends StatelessWidget {
   const InputBox({super.key});
@@ -210,6 +214,7 @@ class InputBox extends StatelessWidget {
         children: [
           const Expanded(
             child: TextField(
+              controller: textController,
               style: TextStyle(
                 fontFamily: "Comic",
                 fontSize: 18,
@@ -239,7 +244,7 @@ class InputBox extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _buildIconButton("assets/icons/tabler--device-floppy.svg"),
+          _buildSaveButton("assets/icons/tabler--device-floppy.svg"),
           const SizedBox(width: 5),
           _buildIconButton("assets/icons/tabler--eraser.svg"),
           const SizedBox(width: 20),
@@ -252,6 +257,18 @@ class InputBox extends StatelessWidget {
   Widget _buildIconButton(String assetPath) {
     return IconButton(
       onPressed: () {}, // TODO: Add button functionality
+      icon: SvgPicture.asset(
+        assetPath,
+        width: 24,
+        height: 24,
+      ),
+    );
+  }
+}
+
+  Widget _buildSaveButton(String assetPath) {
+    return IconButton(
+      onPressed: saveIdea(), // TODO: Add button functionality
       icon: SvgPicture.asset(
         assetPath,
         width: 24,
