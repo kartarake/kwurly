@@ -255,7 +255,7 @@ class InputBoxState extends State<InputBox> {
         children: [
           _buildSaveButton(textController),
           const SizedBox(width: 5),
-          _buildIconButton("assets/icons/tabler--eraser.svg"),
+          _buildEraseButton(textController),
           const SizedBox(width: 20),
         ],
       ),
@@ -263,11 +263,12 @@ class InputBoxState extends State<InputBox> {
   }
 
   /// Creates a standardized icon button
-  Widget _buildIconButton(String assetPath) {
+  Widget _buildEraseButton(TextEditingController textController) {
     return IconButton(
-      onPressed: () {},
+      tooltip: "Clear Idea",
+      onPressed: () {textController.clear();},
       icon: SvgPicture.asset(
-        assetPath,
+        "assets/icons/tabler--eraser.svg",
         width: 24,
         height: 24,
       ),
@@ -276,6 +277,7 @@ class InputBoxState extends State<InputBox> {
 
   Widget _buildSaveButton(TextEditingController textController) {
     return IconButton(
+      tooltip: "Save Idea",
       onPressed: () {saveIdea(textController.text);},
       icon: SvgPicture.asset(
         "assets/icons/tabler--device-floppy.svg",
