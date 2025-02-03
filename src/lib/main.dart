@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: _appBarActions,
+        // actions: _appBarActions,
         elevation: 0,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0, // Remove scroll shadow
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
           fontFamily: "Comic",
           color: Colors.black,
         ),
-      ),
+      ),      
     );
   }
 
@@ -227,6 +227,7 @@ class InputBoxState extends State<InputBox> {
               style: TextStyle(
                 fontFamily: "Comic",
                 fontSize: 18,
+                fontWeight: FontWeight.bold
               ),
               maxLines: 4,
               decoration: InputDecoration(
@@ -268,7 +269,7 @@ class InputBoxState extends State<InputBox> {
       tooltip: "Clear Idea",
       onPressed: () {textController.clear();},
       icon: SvgPicture.asset(
-        "assets/icons/tabler--eraser.svg",
+        "assets\\icons\\cloud-erase.svg",
         width: 24,
         height: 24,
       ),
@@ -280,7 +281,7 @@ class InputBoxState extends State<InputBox> {
       tooltip: "Save Idea",
       onPressed: () {saveIdea(textController.text);},
       icon: SvgPicture.asset(
-        "assets/icons/tabler--device-floppy.svg",
+        "assets\\icons\\cloud-save.svg",
         width: 24,
         height: 24,
       ),
