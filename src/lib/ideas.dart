@@ -1,19 +1,48 @@
+import 'dart:io';
+
 import 'package:kwurly/handle.dart';
-import "package:kwurly/utility.dart";
 
-void saveIdea(idea) async{
-  await createFolderIfNotExists("userdata/ideas");
-  List<String> files = listFilesInFolder("userdata/ideas");
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
-  Map<String, dynamic> data = {};
-  data["idea"] = idea;
-  data["date"] = DateTime.now().toString();
-  data["star"] = false;
-  data["words"] = [];
+void saveIdea(String ideaTrack, String idea) {
+  String ideaTrackHash = hash(ideaTrack);
+  String filepath = "userdata/ideas/$ideaTrackHash.json";
 
-  String id = generateUniqueSequence();
-  while (files.contains("userdata/ideas/$id.json")) {
-    id = generateUniqueSequence();
+  try {
+    Map<String, dynamic> data = load(filepath);
+    data["idea"] = idea;
+    save(data, filepath);
+    
+  } on FileSystemException catch (e) {
+    if (e.osError != null && e.osError!.errorCode == 2) {
+      createfolder("userdata/ideas/");
+      Map<String, dynamic> data = newformatData(idea, ideaTrack);      
+      save(data, filepath);
+    }
   }
-  save(data, "userdata/ideas/$id.json");
+}
+
+Map<String, dynamic> newformatData (String idea, String ideatrack) {
+  Map<String, dynamic> data = {};
+  
+  data["idea"] = idea;
+  data["starred"] = false;
+  data["ideatrack"] = ideatrack;
+
+  return data;
+}
+
+void createfolder (String folderPath) {
+  final directory = Directory(folderPath);
+
+  if (!directory.existsSync()) {
+    directory.createSync(recursive: true);
+  }
+}
+
+String hash(String input) {
+  List<int> bytes = utf8.encode(input);
+  Digest digest = sha256.convert(bytes);
+  return digest.toString();
 }

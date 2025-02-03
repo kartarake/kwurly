@@ -39,8 +39,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "kwurly",
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: HomePage(),
     );
+  }
+}
+
+class IdeaTrack {
+  String current = "";
+  
+  String toStringRep() {
+    if (current == "") {
+      return "No Track Selected";
+    } else {
+      return "Track Selected: $current";
+    }
   }
 }
 
@@ -55,6 +67,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<String> _words = [];
   final ScrollController _scrollController = ScrollController();
+  IdeaTrack ideaTrack = IdeaTrack();
 
   /// Adds new words to the list and scrolls to bottom
   void _addWords() {
@@ -84,7 +97,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InputBox(),  // Text input container
+              Text(ideaTrack.toStringRep()),
+              InputBox(ideaTrack: ideaTrack),  // Text input container
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
               const SizedBox(height: 50),
@@ -195,17 +209,22 @@ class _HomePageState extends State<HomePage> {
 
 /// Custom input box with text field and action buttons
 class InputBox extends StatefulWidget {
-  const InputBox({super.key});
+  final IdeaTrack ideaTrack;
+  InputBox({required this.ideaTrack});
+
   @override
   State<InputBox> createState() => InputBoxState();
 }
 
 class InputBoxState extends State<InputBox> {
+  IdeaTrack ideaTrack = InputBox.ideaTrack;
+
   final _textController = TextEditingController();  
   @override  void dispose() {
     _textController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -241,20 +260,22 @@ class InputBoxState extends State<InputBox> {
               ),
             ),
           ),
-          _buildActionButtons(_textController),
+          _buildActionButtons(_textController, ideaTrack),
         ],
       ),
     );
   }
 
   /// Builds the row of action buttons
-  Widget _buildActionButtons(TextEditingController textController) {
+  Widget _buildActionButtons(TextEditingController textController, IdeaTrack ideaTrack) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _buildSaveButton(textController),
+          _buildNewButton(textController, context, ideaTrack),
+          const SizedBox(width: 5),
+          _buildSaveButton(textController, ideaTrack),
           const SizedBox(width: 5),
           _buildEraseButton(textController),
           const SizedBox(width: 20),
@@ -276,10 +297,10 @@ class InputBoxState extends State<InputBox> {
     );
   }
 
-  Widget _buildSaveButton(TextEditingController textController) {
+  Widget _buildSaveButton(TextEditingController textController, IdeaTrack ideaTrack) {
     return IconButton(
       tooltip: "Save Idea",
-      onPressed: () {saveIdea(textController.text);},
+      onPressed: () {saveIdea(textController.text, ideaTrack.current);},
       icon: SvgPicture.asset(
         "assets\\icons\\cloud-save.svg",
         width: 24,
@@ -289,3 +310,83 @@ class InputBoxState extends State<InputBox> {
   }
 }
 
+Widget _buildNewButton(TextEditingController textController, BuildContext context, IdeaTrack ideaTrack) {
+  return IconButton(
+    tooltip: "New Idea",
+    onPressed: () {newIdeaTitleInputDialog(context, textController, ideaTrack);},
+    icon: SvgPicture.asset(
+      "assets\\icons\\cloud-add.svg",
+      width: 24,
+      height: 24,
+    ),
+  );
+}
+
+void newIdeaTitleInputDialog (BuildContext context, TextEditingController textController, IdeaTrack ideaTrack) {
+  TextEditingController titleInputController = TextEditingController();
+
+  TextField titleInputBox = TextField(
+    decoration: InputDecoration(
+      hintText: "Enter your title here",
+      hintMaxLines: 1,
+      hintStyle: TextStyle(
+        fontFamily: "Comic",
+        fontSize: 18,
+      ),
+    ),
+    controller: titleInputController
+  );
+
+  TextButton cancelButton = TextButton(
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+    child: Text(
+      "Cancel",
+      style: TextStyle(
+        fontFamily: "Comic",
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.grey
+      ),      
+    ),
+  );
+
+  TextButton createButton = TextButton(
+    onPressed:() {
+      saveIdea(titleInputController.text, "");
+      Navigator.of(context).pop();
+
+      ideaTrack.current = titleInputController.text;
+      textController.clear();
+    }, 
+    child: Text(
+      "Create",
+      style: TextStyle(
+        fontFamily: "Comic",
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.black
+      ),
+    )
+  );
+
+  showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          titleInputBox
+        ],
+      ),
+
+      actions: [
+        cancelButton,
+        createButton
+      ],
+    );
+  });
+}
