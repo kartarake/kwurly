@@ -91,8 +91,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ideaTrack = Provider.of<IdeaTrack>(context);
-
     return Scaffold(
       appBar: AppBar(
         // actions: _appBarActions,
@@ -106,7 +104,8 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(ideaTrack.toStringRep()),
+              _buildIdeaTrackBar(),
+              const SizedBox(height: 20),
               InputBox(),  // Text input container
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
@@ -116,6 +115,31 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+  }
+
+  Container _buildIdeaTrackBar() {
+    final ideaTrack = Provider.of<IdeaTrack>(context);
+    return Container(
+      height: 30,
+      width: 1209,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Color(0xff353e43)
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 40),
+          Text(
+            ideaTrack.toStringRep(),
+            style: TextStyle(
+              fontFamily: "Comic",
+              fontSize: 16,
+              color: Colors.white
+            ),
+          )
+        ],
+      )
     );
   }
 
@@ -308,7 +332,12 @@ class InputBoxState extends State<InputBox> {
 
     return IconButton(
       tooltip: "Save Idea",
-      onPressed: () {saveIdea(ideaTrack.current, textController.text);},
+      onPressed: () {
+        if (ideaTrack.current == "") {
+          newIdeaTitleInputDialog(context, textController);
+        }
+        saveIdea(ideaTrack.current, textController.text);
+      },
       icon: SvgPicture.asset(
         "assets\\icons\\cloud-save.svg",
         width: 24,
@@ -321,7 +350,10 @@ class InputBoxState extends State<InputBox> {
 Widget _buildNewButton(TextEditingController textController, BuildContext context) {
   return IconButton(
     tooltip: "New Idea",
-    onPressed: () {newIdeaTitleInputDialog(context, textController);},
+    onPressed: () {
+      newIdeaTitleInputDialog(context, textController);
+      textController.clear();
+    },
     icon: SvgPicture.asset(
       "assets\\icons\\cloud-add.svg",
       width: 24,
@@ -365,8 +397,7 @@ void newIdeaTitleInputDialog (BuildContext context, TextEditingController textCo
     onPressed:() {
       saveIdea(titleInputController.text, "");
       Navigator.of(context).pop();
-      ideaTrack.setCurrent(titleInputController.text);
-      textController.clear();
+      ideaTrack.setCurrent(titleInputController.text); 
     }, 
 
     child: Text(
