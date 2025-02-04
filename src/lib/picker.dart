@@ -1,18 +1,30 @@
 import 'package:kwurly/handle.dart';
 import 'dart:math';
+import 'dart:io';
 
-int nouns = 10;
+int n = 10; // The number of words returned per call
+
+List<String> listOutPaths() {
+  Directory dir = Directory("./data/");
+  List<FileSystemEntity> entities = dir.listSync();
+  List<String> paths = entities
+    .whereType<File>()
+    .map((file) => file.path)
+    .toList();
+  paths.remove("./data/manager.py");
+  paths.remove("./data/download.py");
+  return paths;
+}
 
 List<String> pick() {
-  int n = 10;
-  List<int> fileindexes = List.generate(n, (index) => index+1);
+  List<String> paths = listOutPaths();
+  Random random = Random();
 
   List<String> nouns = [];
-  for (int i = 0; i < 10; i++) {
-    int fileindex = fileindexes[Random().nextInt(fileindexes.length)];
-    Map<String, dynamic> data = load('data/nouns$fileindex.json');
-    String noun = data['nouns'][Random().nextInt(data['nouns'].length)];
-    nouns.add(noun);
+  for (int i = 0; i < n; i++) {
+    String path = paths[random.nextInt(paths.length)];
+    List<String> data = loadArray(path);
+    nouns.add(data[random.nextInt(data.length)]);
   }
   
   return nouns;
