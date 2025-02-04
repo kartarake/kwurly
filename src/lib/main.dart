@@ -1,8 +1,10 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kwurly/ideas.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+
+import 'package:kwurly/ideas.dart';
 import 'package:kwurly/picker.dart';
 
 
@@ -36,24 +38,30 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "kwurly",
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+    return ChangeNotifierProvider(
+      create: (context) => IdeaTrack(),
+      child: MaterialApp(
+        title: "kwurly",
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      )
     );
   }
 }
 
-class IdeaTrack {
-  String current = "";
+class IdeaTrack extends ChangeNotifier {
+  String _current = "";
   
-  String toStringRep() {
-    if (current == "") {
-      return "No Track Selected";
-    } else {
-      return "Track Selected: $current";
-    }
+  String get current => _current;
+  
+  void setCurrent(String value) {
+    _current = value;
+    notifyListeners();
   }
+  
+  String toStringRep() => _current.isEmpty 
+      ? "No Track Selected" 
+      : "Track Selected: $_current";
 }
 
 /// Main page widget with interactive elements
@@ -67,7 +75,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<String> _words = [];
   final ScrollController _scrollController = ScrollController();
-  IdeaTrack ideaTrack = IdeaTrack();
 
   /// Adds new words to the list and scrolls to bottom
   void _addWords() {
@@ -84,6 +91,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ideaTrack = Provider.of<IdeaTrack>(context);
+
     return Scaffold(
       appBar: AppBar(
         // actions: _appBarActions,
@@ -98,7 +107,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(ideaTrack.toStringRep()),
-              InputBox(ideaTrack: ideaTrack),  // Text input container
+              InputBox(),  // Text input container
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
               const SizedBox(height: 50),
@@ -209,16 +218,13 @@ class _HomePageState extends State<HomePage> {
 
 /// Custom input box with text field and action buttons
 class InputBox extends StatefulWidget {
-  final IdeaTrack ideaTrack;
-  InputBox({required this.ideaTrack});
+  const InputBox({super.key});
 
   @override
   State<InputBox> createState() => InputBoxState();
 }
 
 class InputBoxState extends State<InputBox> {
-  IdeaTrack ideaTrack = InputBox.ideaTrack;
-
   final _textController = TextEditingController();  
   @override  void dispose() {
     _textController.dispose();
@@ -260,22 +266,22 @@ class InputBoxState extends State<InputBox> {
               ),
             ),
           ),
-          _buildActionButtons(_textController, ideaTrack),
+          _buildActionButtons(_textController),
         ],
       ),
     );
   }
 
   /// Builds the row of action buttons
-  Widget _buildActionButtons(TextEditingController textController, IdeaTrack ideaTrack) {
+  Widget _buildActionButtons(TextEditingController textController) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _buildNewButton(textController, context, ideaTrack),
+          _buildNewButton(textController, context),
           const SizedBox(width: 5),
-          _buildSaveButton(textController, ideaTrack),
+          _buildSaveButton(textController),
           const SizedBox(width: 5),
           _buildEraseButton(textController),
           const SizedBox(width: 20),
@@ -297,10 +303,12 @@ class InputBoxState extends State<InputBox> {
     );
   }
 
-  Widget _buildSaveButton(TextEditingController textController, IdeaTrack ideaTrack) {
+  Widget _buildSaveButton(TextEditingController textController) {
+    final ideaTrack = Provider.of<IdeaTrack>(context, listen: false);
+
     return IconButton(
       tooltip: "Save Idea",
-      onPressed: () {saveIdea(textController.text, ideaTrack.current);},
+      onPressed: () {saveIdea(ideaTrack.current, textController.text);},
       icon: SvgPicture.asset(
         "assets\\icons\\cloud-save.svg",
         width: 24,
@@ -310,10 +318,10 @@ class InputBoxState extends State<InputBox> {
   }
 }
 
-Widget _buildNewButton(TextEditingController textController, BuildContext context, IdeaTrack ideaTrack) {
+Widget _buildNewButton(TextEditingController textController, BuildContext context) {
   return IconButton(
     tooltip: "New Idea",
-    onPressed: () {newIdeaTitleInputDialog(context, textController, ideaTrack);},
+    onPressed: () {newIdeaTitleInputDialog(context, textController);},
     icon: SvgPicture.asset(
       "assets\\icons\\cloud-add.svg",
       width: 24,
@@ -322,8 +330,9 @@ Widget _buildNewButton(TextEditingController textController, BuildContext contex
   );
 }
 
-void newIdeaTitleInputDialog (BuildContext context, TextEditingController textController, IdeaTrack ideaTrack) {
+void newIdeaTitleInputDialog (BuildContext context, TextEditingController textController) {
   TextEditingController titleInputController = TextEditingController();
+  final ideaTrack = Provider.of<IdeaTrack>(context, listen: false);
 
   TextField titleInputBox = TextField(
     decoration: InputDecoration(
@@ -356,10 +365,10 @@ void newIdeaTitleInputDialog (BuildContext context, TextEditingController textCo
     onPressed:() {
       saveIdea(titleInputController.text, "");
       Navigator.of(context).pop();
-
-      ideaTrack.current = titleInputController.text;
+      ideaTrack.setCurrent(titleInputController.text);
       textController.clear();
     }, 
+
     child: Text(
       "Create",
       style: TextStyle(
