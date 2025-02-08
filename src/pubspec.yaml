@@ -64,12 +64,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets\icons\tabler--settings.svg
-    - assets\icons\tabler--device-floppy.svg
-    - assets\icons\tabler--eraser.svg
     - assets\icons\tabler--arrow-up-right.svg
-    - assets\icons\cloud-add.svg
-    - assets\icons\cloud-erase.svg
-    - assets\icons\cloud-save.svg
+    - assets\icons\add.svg
+    - assets\icons\save.svg
+    - assets\icons\eraser.svg
 
   fonts:
     - family: Comic

@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:kwurly/ideas.dart';
 import 'package:kwurly/picker.dart';
 
+import 'package:kwurly/history.dart';
+
 
 /// Main application entry point
 void main() async {
@@ -42,8 +44,11 @@ class MyApp extends StatelessWidget {
       create: (context) => IdeaTrack(),
       child: MaterialApp(
         title: "kwurly",
+        routes: {
+          "/": (context) => HomePage(),
+          "/history": (context) => HistoryPage(),
+        },
         debugShowCheckedModeBanner: false,
-        home: HomePage(),
       )
     );
   }
@@ -95,7 +100,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // actions: _appBarActions,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff5f5f5),
         scrolledUnderElevation: 0, // Remove scroll shadow
       ),
       body: Container(
@@ -110,11 +115,22 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
               const SizedBox(height: 50),
-              _buildGenerateButton(), // Main action button
+              _buildActionButtons(), // Main action button
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildGenerateButton(),
+        SizedBox(width: 20),
+        buildHistoryButton()
+      ],
     );
   }
 
@@ -125,7 +141,7 @@ class _HomePageState extends State<HomePage> {
       width: 1209,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Color(0xff353e43)
+        color: Color(0xffefcb68)
       ),
       child: Row(
         children: [
@@ -135,7 +151,8 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(
               fontFamily: "Comic",
               fontSize: 16,
-              color: Colors.white
+              color: Colors.black,
+              fontWeight: FontWeight.bold
             ),
           )
         ],
@@ -145,11 +162,7 @@ class _HomePageState extends State<HomePage> {
 
   /// Background gradient decoration
   static const _backgroundDecoration = BoxDecoration(
-    gradient: LinearGradient(
-      colors: [Colors.white, Color.fromARGB(255, 230, 230, 230)],
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-    ),
+    color: Color(0xfff5f5f5),
   );
 
   /// App bar action buttons
@@ -201,6 +214,26 @@ class _HomePageState extends State<HomePage> {
           color: Colors.black,
         ),
       ),      
+    );
+  }
+
+  Widget buildHistoryButton() {
+    return TextButton(
+      onPressed: () {
+        Navigator.pushNamed(context, "/history");
+      },
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(Colors.transparent),
+      ),
+      child: Text(
+        "History",
+        style: TextStyle(
+          fontFamily: "Comic",
+          fontSize: 18,
+          color: Colors.black,
+          decoration: TextDecoration.underline
+        ),
+      ),
     );
   }
 
@@ -320,9 +353,9 @@ class InputBoxState extends State<InputBox> {
       tooltip: "Clear Idea",
       onPressed: () {textController.clear();},
       icon: SvgPicture.asset(
-        "assets\\icons\\cloud-erase.svg",
-        width: 24,
-        height: 24,
+        "assets\\icons\\eraser.svg",
+        width: 18,
+        height: 18,
       ),
     );
   }
@@ -339,9 +372,9 @@ class InputBoxState extends State<InputBox> {
         saveIdea(ideaTrack.current, textController.text);
       },
       icon: SvgPicture.asset(
-        "assets\\icons\\cloud-save.svg",
-        width: 24,
-        height: 24,
+        "assets\\icons\\save.svg",
+        width: 18,
+        height: 18,
       ),
     );
   }
@@ -355,9 +388,9 @@ Widget _buildNewButton(TextEditingController textController, BuildContext contex
       textController.clear();
     },
     icon: SvgPicture.asset(
-      "assets\\icons\\cloud-add.svg",
-      width: 24,
-      height: 24,
+      "assets\\icons\\add.svg",
+      width: 18,
+      height: 18,
     ),
   );
 }

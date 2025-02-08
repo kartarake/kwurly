@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:kwurly/handle.dart';
-
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 
@@ -45,4 +43,21 @@ String hash(String input) {
   List<int> bytes = utf8.encode(input);
   Digest digest = sha256.convert(bytes);
   return digest.toString();
+}
+
+bool anyIdeaTrack () {
+  List<String> paths = listOutPaths();
+  return paths.isNotEmpty;
+}
+
+List loadIdeas () {
+  List<String> paths = listOutIdeaPaths();
+  List ideas = [];
+
+  for (String path in paths) {
+    Map<String, dynamic> data = load(path);
+    ideas.add(data);
+  }
+
+  return ideas;
 }

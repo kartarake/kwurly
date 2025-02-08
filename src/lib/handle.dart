@@ -29,3 +29,26 @@ List<String> loadArray (String path) {
   List<String> stringList = dynamicList.map((item) => item.toString()).toList();
   return stringList;
 }
+
+
+List<String> listOutPaths() {
+  Directory dir = Directory("./data/");
+  List<FileSystemEntity> entities = dir.listSync();
+  List<String> paths = entities
+    .whereType<File>()
+    .map((file) => file.path)
+    .toList();
+  paths.remove("./data/manager.py");
+  paths.remove("./data/download.py");
+  return paths;
+}
+
+List<String> listOutIdeaPaths() {
+  Directory dir = Directory("./userdata/ideas/");
+  List<FileSystemEntity> entities = dir.listSync();
+  List<String> paths = entities
+    .whereType<File>()
+    .map((file) => file.path)
+    .toList();
+  return paths;
+}
