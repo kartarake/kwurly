@@ -471,7 +471,7 @@ Widget _buildNewButton(TextEditingController textController, BuildContext contex
   );
 }
 
-String newIdeaTitleInputDialog (BuildContext context, TextEditingController textController) {
+Future<String?> newIdeaTitleInputDialog (BuildContext context, TextEditingController textController) {
   TextEditingController titleInputController = TextEditingController();
   final ideaTrack = Provider.of<IdeaTrack>(context, listen: false);
 
@@ -520,7 +520,7 @@ String newIdeaTitleInputDialog (BuildContext context, TextEditingController text
     )
   );
 
-  showDialog(
+  return showDialog<String>(
   context: context,
   builder: (BuildContext context) {
     return AlertDialog(
@@ -538,6 +538,4 @@ String newIdeaTitleInputDialog (BuildContext context, TextEditingController text
       ],
     );
   });
-
-  return titleInputController.text;
 }
