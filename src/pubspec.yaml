@@ -65,9 +65,15 @@ flutter:
   assets:
     - assets\icons\tabler--settings.svg
     - assets\icons\tabler--arrow-up-right.svg
-    - assets\icons\add.svg
-    - assets\icons\save.svg
-    - assets\icons\eraser.svg
+    - assets\icons\tabler--chevrons-left.svg
+    - assets\icons\tabler--device-floppy.svg
+    - assets\icons\tabler--eraser.svg
+    - assets\icons\tabler--menu-2.svg
+    - assets\icons\tabler--plus.svg
+    - assets\icons\tabler--search.svg
+    - assets\icons\tabler--settings-2.svg
+    - assets\icons\tabler--star-filled.svg
+    - assets\icons\tabler--star.svg
 
   fonts:
     - family: Comic

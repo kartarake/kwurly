@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         // actions: _appBarActions,
         elevation: 0,
-        backgroundColor: Color(0xfff5f5f5),
+        backgroundColor: Color(0xff93a2a4),
         scrolledUnderElevation: 0, // Remove scroll shadow
       ),
       drawer: _buildDrawer(),
@@ -107,13 +107,12 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildIdeaTrackBar(),
-              const SizedBox(height: 20),
               InputBox(),  // Text input container
               const SizedBox(height: 40),
               _buildWordsContainer(), // Scrollable words grid
               const SizedBox(height: 50),
               _buildActionButtons(), // Main action button
+              const SizedBox(height: 10),
             ],
           ),
         ),
@@ -123,7 +122,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildDrawer() {
     return Drawer(
-      backgroundColor: Color(0xff272727),
+      backgroundColor: Color(0xff2e3333),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
@@ -139,10 +138,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildDrawerToolBox () {
     return Container(
-      height: 138,
+      height: 151,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Color(0xff999896)
+        borderRadius: BorderRadius.circular(30),
+        color: Color(0xff3d4344)
       ),
       child: Padding(padding: const EdgeInsets.all(20),
         child: Column(
@@ -150,13 +149,20 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(" Tool Box", style: TextStyle(fontFamily: "Comic", fontSize: 16),),
+                Text(" Tool Box", 
+                  style: TextStyle(
+                    fontFamily: "Comic", 
+                    fontSize: 18,
+                    color: Color(0xffa5b5b7),
+                  ),
+                ),
                 Spacer(),
                 buildSettingsButton(),
               ],
             ),
             SizedBox(height: 10,),
             SearchBar(),
+            const SizedBox(height: 10)
           ],
         ),
       )
@@ -169,6 +175,7 @@ class _HomePageState extends State<HomePage> {
         "assets/icons/tabler--settings.svg",
         width: 24,
         height: 24,
+        colorFilter: ColorFilter.mode(Color(0xff808a8c), BlendMode.srcIn),
       ),
       onPressed: () {},
     );
@@ -180,7 +187,7 @@ class _HomePageState extends State<HomePage> {
       style: TextStyle(
         fontFamily: "Comic",
         fontSize: 16,
-        color: Color(0xff999896),
+        color: Color(0xff808a8c),
       ),
     );
   }
@@ -194,43 +201,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container _buildIdeaTrackBar() {
-    final ideaTrack = Provider.of<IdeaTrack>(context);
-    return Container(
-      height: 40,
-      width: 1209,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: Color(0xffa0cac0)
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 40),
-          Text(
-            ideaTrack.toStringRep(),
-            style: TextStyle(
-              fontFamily: "Comic",
-              fontSize: 18,
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-            ),
-          )
-        ],
-      )
-    );
-  }
-
   /// Background gradient decoration
   static const _backgroundDecoration = BoxDecoration(
-    color: Color(0xfff5f5f5),
+    color: Color(0xff93a2a4),
   );
 
 
   /// Builds the scrollable words container
   Widget _buildWordsContainer() {
     return Container(
-      height: 300,
-      width: 1209,
+      height: 162,
+      width: 1200,
       padding: const EdgeInsets.all(20),
       child: SingleChildScrollView(
         controller: _scrollController,
@@ -249,7 +230,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xffd2dadb),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Text(
@@ -267,12 +248,12 @@ class _HomePageState extends State<HomePage> {
   Widget _buildGenerateButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xffd2dadb),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
         ),
         elevation: 2,
-        fixedSize: const Size(151, 60),
+        fixedSize: const Size(151, 70),
       ),
       onPressed: _addWords,
       child: Row(
@@ -318,20 +299,36 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(color: Colors.black),
-        ),
-        suffixIcon: Icon(Icons.search,),
-        hintText: 'Search',
-        hintFadeDuration: Duration(milliseconds: 500),
+        fillColor: Color(0xff2e3333),
+        filled: true,
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Color(0x00808a8c)),
         ),
+
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(color: Color(0xff808a8c)),
+        ),
+
+        suffixIcon: Padding(
+          padding: EdgeInsets.all(10),
+          child:SvgPicture.asset(
+            "assets/icons/tabler--search.svg",
+            colorFilter: ColorFilter.mode(Color(0xff808a8c), BlendMode.srcIn),
+          ),        
+        ),
+
+        hintText: 'Search',
+        hintStyle: TextStyle(color: Color(0xff808a8c), fontFamily: "Comic", fontSize: 18),
+        hintFadeDuration: Duration(milliseconds: 500),
       ),
+
       onSubmitted: (value) {
         searchIdeas();
       },
+
       autofocus: true,
       autocorrect: true,
       enableSuggestions: true,
@@ -365,15 +362,24 @@ class InputBoxState extends State<InputBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 1209,
-      height: 211,
+      width: 1200,
+      height: 375,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xffd2dadb),
         border: Border.all(
-          color: const Color(0xff191919),
-          width: 0.5,
+          color: Colors.black,
+          width: 1,
         ),
         borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.2),
+            blurRadius: 4,
+            spreadRadius: 0,
+            offset: Offset(4, 4),
+            
+          ),
+        ],
       ),
       child: Column(
         children: [
@@ -383,12 +389,11 @@ class InputBoxState extends State<InputBox> {
               style: TextStyle(
                 fontFamily: "Comic",
                 fontSize: 18,
-                fontWeight: FontWeight.bold
               ),
               maxLines: 4,
               decoration: InputDecoration(
                 hintText: 'Your idea goes here ..',
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: TextStyle(color: Color(0xff7a8587), fontFamily: "Comic", fontSize: 18),
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 40,
                   vertical: 30,
@@ -427,9 +432,9 @@ class InputBoxState extends State<InputBox> {
       tooltip: "Clear Idea",
       onPressed: () {textController.clear();},
       icon: SvgPicture.asset(
-        "assets\\icons\\eraser.svg",
-        width: 18,
-        height: 18,
+        "assets\\icons\\tabler--eraser.svg",
+        width: 24,
+        height: 24,
       ),
     );
   }
@@ -448,9 +453,9 @@ class InputBoxState extends State<InputBox> {
         }
       },
       icon: SvgPicture.asset(
-        "assets\\icons\\save.svg",
-        width: 18,
-        height: 18,
+        "assets\\icons\\tabler--device-floppy.svg",
+        width: 24,
+        height: 24,
       ),
     );
   }
@@ -464,9 +469,9 @@ Widget _buildNewButton(TextEditingController textController, BuildContext contex
       textController.clear();
     },
     icon: SvgPicture.asset(
-      "assets\\icons\\add.svg",
-      width: 18,
-      height: 18,
+      "assets\\icons\\tabler--plus.svg",
+      width: 24,
+      height: 24,
     ),
   );
 }
